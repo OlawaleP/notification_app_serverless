@@ -1,0 +1,6 @@
+NotificationSNSIAM:
+  Effect: Allow
+  Action:
+    - sns:Publish   
+  Resource: 
+    - ${self:custom.notificationSNS.arn}

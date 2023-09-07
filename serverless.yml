@@ -1,0 +1,50 @@
+service: centbit-serverless-backend-app
+plugins:
+  - serverless-offline
+
+frameworkVersion: "3"
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  memorySize: 256
+  timeout: 5
+  stage: ${opt:stage, 'dev'}
+  region: us-east-1
+  environment:
+
+  iam:
+    role:
+      statements:
+        - ${file(iam/NotificationQueueIAM.yml):NotificationQueueIAM}
+        - ${file(iam/NotificationSNSIAM.yml):NotificationSNSIAM}
+        - ${file(iam/NotificationSESIAM.yml):NotificationSESIAM}
+
+resources:
+  Resources:
+    NotificationQueue: ${file(resources/NotificationQueue.yml):NotificationQueue}
+    NotificationSNS: ${file(resources/NotificationSNS.yml):NotificationSNS}
+    NotificationSES: ${file(resources/NotificationSES.yml):NotificationSES}
+  Outputs:
+    NotificationQueueArn: ${file(resources/NotificationQueue.yml):Outputs.NotificationQueueArn}
+    NotificationQueueUrl: ${file(resources/NotificationQueue.yml):Outputs.NotificationQueueUrl}
+    NotificationSNSArn: ${file(resources/NotificationSNS.yml):Outputs.NotificationSNSArn}     
+
+functions:
+  notification:
+    handler: src/handlers/notification.handler
+    events:
+      - http: 
+          method: POST
+          path: /notification
+          cors: true
+
+custom:
+  NotificationQueue:
+    name: Notification-${self:provider.stage}
+    arn: !GetAtt NotificationQueue.Arn
+    url: !Ref NotificationQueue
+  NotificationSNS:
+    name: Notification-${self:provider.stage}
+    arn: !Ref NotificationSNS.Arn
+          

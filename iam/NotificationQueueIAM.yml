@@ -1,0 +1,9 @@
+NotificationQueueIAM:
+  Effect: Allow
+  Action:
+    - sqs:SendMessage
+    - sqs:RecieveMessage
+    - sqs:DeleteMessage   
+  Resource: 
+    - ${self:custom.notificationQueue.url}
+    - ${self:custom.notificationQueue.arn}

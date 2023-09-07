@@ -1,0 +1,10 @@
+NotificationSNS:
+  Type: AWS::SNS::Topic
+  Properties:
+    DisplayName: ${self:custom.notificationSNS.name}
+
+Outputs:
+  NotificationSNSArn:
+    Value: ${self:custom.notificationSNS.arn}
+    Export:
+      Name: ${self:custom.notificationSNS.name}-Arn
