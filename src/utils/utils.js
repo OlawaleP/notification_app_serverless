@@ -9,7 +9,7 @@ const ses = new AWS.SES({ region: REGION });
 
 const notificationTemplate = async () => {
   const receiveParams = {
-    QueueUrl: AWS_QUEUE_URL,
+    QueueUrl: process.env.NOTIFICATION_QUEUE_URL,
     MaxNumberOfMessages: 1,
     WaitTimeSeconds: 30,
   };
@@ -43,7 +43,7 @@ exports.messageTemplate = async (notificationType) => {
     await sns.publish(smsParams).promise();
 
     const deleteParams = {
-      QueueUrl: AWS_QUEUE_URL,
+      QueueUrl: process.env.NOTIFICATION_QUEUE_URL,
       ReceiptHandle: message.ReceiptHandle,
     };
 
@@ -86,7 +86,7 @@ exports.emailTemplate = async (senderEmail, receipientEmail, emailSubject) => {
   await ses.sendEmail(emailParams).promise();
 
   const deleteParams = {
-    QueueUrl: AWS_QUEUE_URL,
+    QueueUrl: process.env.NOTIFICATION_QUEUE_URL,
     ReceiptHandle: message.ReceiptHandle,
   };
 

@@ -1,6 +1,10 @@
 service: centbit-serverless-backend-app
 plugins:
   - serverless-offline
+  - serverless-webpack
+
+package:
+  individually: true
 
 frameworkVersion: "3"
 
@@ -12,7 +16,8 @@ provider:
   stage: ${opt:stage, 'dev'}
   region: us-east-1
   environment:
-
+    NOTIFICATION_QUEUE_URL: ${self:custom.NotificationQueue.url}
+    NOTIFICATION_SNS_ARN: ${self:custom.NotificationSNS.arn}
   iam:
     role:
       statements:

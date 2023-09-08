@@ -1,6 +1,7 @@
 NotificationSNSIAM:
   Effect: Allow
   Action:
+    - sns:SetSMSAttributes
     - sns:Publish   
   Resource: 
-    - ${self:custom.notificationSNS.arn}
+    - '*'

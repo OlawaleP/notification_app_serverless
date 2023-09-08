@@ -36,6 +36,3 @@ exports.handler = async (input) => {
     };
   }
 };
-
-
-
