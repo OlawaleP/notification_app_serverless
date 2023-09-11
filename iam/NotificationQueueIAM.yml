@@ -5,5 +5,5 @@ NotificationQueueIAM:
     - sqs:RecieveMessage
     - sqs:DeleteMessage   
   Resource: 
-    - ${self:custom.notificationQueue.url}
-    - ${self:custom.notificationQueue.arn}
+    - ${self:custom.NotificationQueue.url}
+    - ${self:custom.NotificationQueue.arn}
